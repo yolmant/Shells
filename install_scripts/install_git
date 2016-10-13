@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo yum -y install git
+git clone https://github.com/nic-instruction/NTI-300/
+
+echo "a clone of the NTI-300 reposatory is now sitting in this dir, along with a copy of this script \n"
+
