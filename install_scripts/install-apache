@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "installing apache server"
-sudo yum install httpd
+sudo yum -y install httpd
 
 echo "enabling apache server"
 sudo systemctl enable httpd.service
