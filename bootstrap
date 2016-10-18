@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl -o /tmp/install_git https://raw.githubusercontent.com/yolmant/Shells/master/install_scripts/install_git && chmod +x /tmp/install_git && /tmp/install_git
