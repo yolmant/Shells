@@ -1,3 +1,0 @@
-#!/bin/bash
-
-curl -o /tmp/install_git https://raw.githubusercontent.com/nic-instruction/NTI-300/master/install_scripts/install_git && chmod +x /tmp/install_git && /tmp/install_git
