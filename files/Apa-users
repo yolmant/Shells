@@ -1,0 +1,55 @@
+#!/bin/bash
+
+##create the first page
+sudo sh -c 'cat > /var/www/html/first.html' << EF
+<!DOCTYPE>
+	<html>
+		<head>
+			<title> first page </title>
+		</head>
+		<body>
+			<h1 style="font-size: 40px; color:blue"> HELLOOO...!!, WELCOME...!!</h1>
+			<a href="2pages/second.html"; style=" 30px; color: violet"> GO TO THE NEXT PAGE</a>
+		</body>
+	</html>
+EF
+
+##Directory for the second page
+sudo mkdir /var/www/html/2pages
+
+##authentication into httpd.conf
+sudo sed -i "151s/None/AuthConfig/1" /etc/httpd/conf/httpd.conf
+sudo sed -i '159i <Directory "/var/www/html/2pages">' /etc/httpd/conf/httpd.conf
+sudo sed -i '160i AllowOverride AuthConfig' /etc/httpd/conf/httpd.conf
+sudo sed -i '161i </Directory>' /etc/httpd/conf/httpd.conf
+
+## create the username and password
+sudo htpasswd -ci /var/www/html/2pages/.htpasswd yolman <<< 1990
+sudo htpasswd -i /var/www/html/2pages/.htpasswd nicole <<< 2016
+
+##create .htaccess for authemtication
+sudo sh -c 'cat > /var/www/html/2pages/.htaccess' << EOF
+Authtype Basic
+AuthName "users: yolman, nicole passwords: 1990, 2016"
+AuthUserFile /var/www/html/2pages/.htpasswd
+Require valid-user
+EOF
+
+##set permissions
+sudo chmod 644 /var/www/html/2pages/.htaccess 
+sudo chmod 644 /var/www/html/2pages/.htpasswd
+
+##second pages
+sudo sh -c 'cat > /var/www/html/2pages/second.html' << EF
+<!DOCTYPE html>
+	<html>
+		<head>
+			<title> second page </title>
+		</head>
+		<body style="background-color: red">
+			<h1 style="font-size: 40px; color: white"> SECOND PAGE..!! </h1>
+		</body>
+	</html>
+EF
+
+sudo service httpd restart
