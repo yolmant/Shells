@@ -1,9 +1,15 @@
-#update the kernel
+#!/bin/bash
 
-for i in $( cat myips ); do shh -t -i "Linux.pem" ec2-user@$i "sudo yum clean all && sudo yum update kernel && sudo reboot"; done
+##update the kernel
 
-#verify the patches
+for i in $( cat myips ); do 
+  shh -t -i "Linux.pem" ec2-user@$i "sudo yum clean all && sudo yum update kernel && sudo reboot"; 
+done
 
-for i in $( cat myips); do shh -t -i "Linux.pem" ec2-user@$i "sudo rpm -q --changelog kernel | grep CVE-2016-5195"; done
+##verify the patches
 
-#myips is the file that contains my ip addresses 
+for i in $( cat myips); 
+  do shh -t -i "Linux.pem" ec2-user@$i "sudo rpm -q --changelog kernel | grep CVE-2016-5195"; 
+done
+
+##myips is the file that contains my ip addresses 
