@@ -1,0 +1,36 @@
+#!/bin/bash
+
+##create the Shell that will send the message every hour
+sudo sh -c 'cat > /home/ec2-user/Cmessage.bash' << EF
+#!/bin/bash
+
+##numbers of users connected to the machine
+Users=$(/usr/bin/who | grep -c "")
+
+##system open in the VM
+System=$(uname)
+
+##time in seconds that the machines is on
+time=$(cut -f1 -d\ < /proc/uptime)
+
+##message sended to the user by email
+message="the machine with system ${System} is ON with ${Users} users logged in"
+
+##condition if there are no users and passed 1 hour send the message
+if [ Users -eq 0 ] && [ $time > 3600]; then
+	echo "${message}. there is not activity. please stop the VM." | mail -s "report" 18328710948@tmomail.net
+
+else
+fi
+
+EF
+
+##change the permission of the cron file to modify it and introduce the task
+sudo chmod 777 /var/spool/cron
+
+##introducing the task into the cron file
+sudo sed -i "11i 0 * * * * ~/Cmessage.bash" /var/spool/cron/ec2-user
+
+##restore the permission of the cron file
+sudo chmod 700 /var/spool/cron
+
