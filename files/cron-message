@@ -29,7 +29,7 @@ EF
 sudo chmod 777 /var/spool/cron
 
 ##introducing the task into the cron file
-sudo sed -i "11i 0 * * * * ~/Cmessage.bash" /var/spool/cron/ec2-user
+sudo sed -i "11i 0 */1 * * * ~/Cmessage.bash" /var/spool/cron/ec2-user
 
 ##restore the permission of the cron file
 sudo chmod 700 /var/spool/cron
