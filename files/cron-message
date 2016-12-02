@@ -17,7 +17,7 @@ time=$(cut -f1 -d\ < /proc/uptime)
 message="the machine with system ${System} is ON with ${Users} users logged in"
 
 ##condition if there are no users and passed 1 hour send the message
-if [ Users -eq 0 ] && [ $time > 3600]; then
+if [ $Users -eq 0 ] && [ $time > 3600]; then
 	echo "${message}. there is not activity. please stop the VM." | mail -s "report" 18328710948@tmomail.net
 
 else
