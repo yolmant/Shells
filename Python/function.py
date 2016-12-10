@@ -5,7 +5,7 @@ import os, subprocess
 def ApacheI():
 
 	print('\ninstalling Apache serve\n')
-	os.system('sudo yum -y install httpd)
+	os.system('sudo yum -y install httpd')
 	print('enabling Apache server\n')
 	os.system('sudo systemctl enable httpd.service')
 	print('Staring Apache server\n')
@@ -24,22 +24,22 @@ def GithubI():
 	print('intalling Git\n')
 	os.system('sudo yum -y install git')
 	Url=raw_input('introduce you URL from GitHub:\n').lower()
-	os.sytem('git clone '+Url)
+	os.system('git clone '+Url)
 
 #fuction to create a croned message that will send you a text every hour to check the activity in the server
 def CronI():
 
 	#Shell with the message that will be sent every hour
 	#Ask to the user what the email is to send the message
-	Email=raw_input('Introduce your email: '\n).lower()
+	Email=raw_input('Introduce your email: \n').lower()
 	#Allow the user introduce the name of the file and it will be in home directory
-	file=raw_input('Introduce the name of the Shell script: '\n)
+	file=raw_input('Introduce the name of the Shell script: \n')
 	#create the file that will be croned
 	os.system('sudo echo "new" >> /home/ec2-user/'+file+'.bash')
 	#open the file with python
 	Ifile= open('/home/ec2-user/'+file+'.bash', 'w')
 	#write into the file
-	Ifile.wirte("""#!/bin/bash
+	Ifile.write("""#!/bin/bash
 
 Users=$(/usr/bin/who | grep -c "")
 System=$(uname)
@@ -60,11 +60,11 @@ def DjangoI():
 
 	#look the version of python
 	ver=os.system('python --version')
-	print('Python version: '+ver)
+	print('Python version: '+str(ver))
 	#installing virtual environment
-	os.system('sudo rpm -iUvh https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm; sudo yum -y install python-pip; sudo pip install virtualenv,)
+	os.system('sudo rpm -iUvh https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm; sudo yum -y install python-pip; sudo pip install virtualenv')
 	#create a directory for Django and the virtual environment
-	os.system('cd/opt; sudo mkdir django; sudo chown -R ec2-user django; sleep 4; cd django; sudo virtualenv django-env')
+	os.system('cd /opt; sudo mkdir django; sudo chown -R ec2-user django; sleep 4; cd django; sudo virtualenv django-env')
 
 	#activating virtualenv
 	os.system('source /opt/django/django-env/bin/activate; sudo chown -R ec2-user /opt/django; cd /opt/django; pip install django; django-admin --version; django-admin startproject project1; sudo yum -y install tree; tree project1; sleep 1')
@@ -73,16 +73,16 @@ def DjangoI():
 def UpKernelI():
 
 	#clean and update the kernel. otherwise reply an error message
-	os.system('sudo yum clean all && sudo yum update kernel && sudo reboot || echo "FAILUREEE"')
+	os.system('sudo yum clean all && sudo yum -y update kernel && sudo reboot || echo "FAILUREEE"')
 
 #Function to create 2 pages in the Apache server
 def WebsideI():
 
-	#change the permission to work with python
+	#change the perssion to work with python
 	os.system('sudo chmod 777 /var/www/html')
 	#sk the user to name the html files to be shown in the Apache server
-	ff= raw_input('Introduce the name of the first html file: \n')
-	sf= raw_input('Introduce the name of the second html file: \n')
+	ff=raw_input('Introduce the name of the first html file: \n')
+	sf=raw_input('Introduce the name of the second html file: \n')
 	
 	#creating variables which address the html files
 	fone=('/var/www/html/'+ff+'.html')
@@ -104,13 +104,13 @@ def WebsideI():
 		</head>
 		<body>
 			<h1 style="font-size: 40px; color:blue"> HELLO.. WORLD..!!</H1>
-			<a href=\""""+fsecond+"""\"; style=" 30px; color: violet"> GO TO THE NETX PAGE</a>
+			<a href=\"2pages/"""+sf+""".html\"; style=" 30px; color: violet"> GO TO THE NETX PAGE</a>
 		</body>
 	</html>""")
 
 	#Authentication inside the html configuration file
-	os.system('sudo sed -i "151s/None/AutheConfig/1" '+authfile)
-	os.system('sudo sed -i \'159i <Direcory "'+dir+'">\' '+authfile)
+	os.system('sudo sed -i "151s/None/AuthConfig/1" '+authfile)
+	os.system('sudo sed -i \'159i <Directory "'+dir+'">\' '+authfile)
 	os.system('sudo sed -i \'160i AllowOverride AuthConfig\' '+authfile)
 	os.system('sudo sed -i \'161i </Directory>\' '+authfile)
 	
@@ -124,6 +124,7 @@ def WebsideI():
 	os.system('sudo htpasswd -ci '+htpasswd+' '+UserOne+' <<< '+Pone)
 	os.system('sudo htpasswd -i '+htpasswd+' ' +UserTwo+' <<< '+Ptwo)
 
+	os.system('sudo chmod 777 '+dir)
 	os.system('sudo echo "new" >> '+dir+'/.htaccess')
 	htaccess=open(dir+'/.htaccess', 'w')
 	htaccess.write("""Authtype Basic
@@ -145,7 +146,7 @@ Require valid-user""")
 		</head>
 		<body style="background-color: red">
 			<h1 style="font-size: 40px; color: white"> SECOND PAGE...!! </h1>
-			< a herf=""""+fone+"""\"; style=" 30px; color: violet"> BACK TO THE FIRST PAGE </a>
+			<a href=\"../"""+ff+""".html\"; style=" 30px; color: violet"> BACK TO THE FIRST PAGE</a>
 		</body>
 	</html>""")
 	
@@ -153,6 +154,3 @@ Require valid-user""")
 	os.system('sudo service httpd restart')
 
 #Function to add the IP into Django server
-def IpAccessI():
-	
-	
