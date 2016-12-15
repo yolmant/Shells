@@ -154,3 +154,11 @@ Require valid-user""")
 	os.system('sudo service httpd restart')
 
 #Function to add the IP into Django server
+def IpAccessI():
+	
+	#check and save the ip of the VM
+	ip = subprocess.check_output("curl http://checkip.amazonaws.com", shell=True)
+	#variable with the line that will be replaced in the file setting
+	address= ('ALLOWED_HOSTS = [\''+ip.strip('\n')+'\',]')
+
+	os.system('sudo sed -i \"28s/.*/'+address+'/\" /opt/django/project1/project1/settings.py')
