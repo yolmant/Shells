@@ -5,24 +5,24 @@ import os, subprocess
 def ApacheI():
 
 	print('\ninstalling Apache serve\n')
-	os.system('sudo yum -y install httpd')
+	os.system('yum -y install httpd')
 	print('enabling Apache server\n')
-	os.system('sudo systemctl enable httpd.service')
+	os.system('systemctl enable httpd.service')
 	print('Staring Apache server\n')
-	os.system('sudo systemctl start httpd.service\n')
+	os.system('systemctl start httpd.service\n')
 	print('open the security setting for port 80 in your server, to observer the Apache server working')
 
 #function to verify COW
 def CowI():
 
 	print('appling verification of COW in kernel.\n')
-	os.system('sudo rpm -q --changelog kernel | grep CVE-2016-5195')
+	os.system('rpm -q --changelog kernel | grep CVE-2016-5195')
 
 #function to install github(you will be able to introduce the URL for your github reponsotory
 def GithubI():
 
 	print('intalling Git\n')
-	os.system('sudo yum -y install git')
+	os.system('yum -y install git')
 	Url=raw_input('introduce you URL from GitHub:\n').lower()
 	os.system('git clone '+Url)
 
@@ -35,7 +35,7 @@ def CronI():
 	#Allow the user introduce the name of the file and it will be in home directory
 	file=raw_input('Introduce the name of the Shell script: \n')
 	#create the file that will be croned
-	os.system('sudo echo "new" >> /home/ec2-user/'+file+'.bash')
+	os.system('echo "new" >> /home/ec2-user/'+file+'.bash')
 	#open the file with python
 	Ifile= open('/home/ec2-user/'+file+'.bash', 'w')
 	#write into the file
@@ -51,7 +51,7 @@ if [ $Users -eq 0 ] && [ $time > 3600 ]; then
 else
 fi""")
 	#change the permission of cron, add the crontab line and restore the permissions
-	os.system('sudo chmod 777 /var/spool/cron; sudo echo "0 */1 * * * ~/'+file+'.bash" >> /var/spool/cron/ec2-user; sudo chmod 700 /var/spool/cron')
+	os.system('chmod 777 /var/spool/cron; echo "0 */1 * * * ~/'+file+'.bash" >> /var/spool/cron/ec2-user; chmod 700 /var/spool/cron')
 	#end of the function 
 	print('crontab and file installed: new crontab added')
 
@@ -62,38 +62,38 @@ def DjangoI():
 	ver=os.system('python --version')
 	print('Python version: '+str(ver))
 	#installing virtual environment
-	os.system('sudo rpm -iUvh https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm; sudo yum -y install python-pip; sudo pip install virtualenv')
+	os.system('rpm -iUvh https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm; yum -y install python-pip; pip install virtualenv')
 	#create a directory for Django and the virtual environment
-	os.system('cd /opt; sudo mkdir django; sudo chown -R ec2-user django; sleep 4; cd django; sudo virtualenv django-env')
+	os.system('cd /opt; mkdir django; chown -R ec2-user django; sleep 4; cd django; virtualenv django-env')
 
 	#activating virtualenv
-	os.system('source /opt/django/django-env/bin/activate; sudo chown -R ec2-user /opt/django; cd /opt/django; pip install django; django-admin --version; django-admin startproject project1; sudo yum -y install tree; tree project1; sleep 1')
+	os.system('source /opt/django/django-env/bin/activate; chown -R ec2-user /opt/django; cd /opt/django; pip install django; django-admin --version; django-admin startproject project1; yum -y install tree; tree project1; sleep 1')
 
 #Function to Update kernel
 def UpKernelI():
 
 	#clean and update the kernel. otherwise reply an error message
-	os.system('sudo yum clean all && sudo yum -y update kernel && sudo reboot || echo "FAILUREEE"')
+	os.system('yum clean all && yum -y update kernel && reboot || echo "FAILUREEE"')
 
 #Function to create 2 pages in the Apache server
 def WebsideI():
 
 	#change the perssion to work with python
-	os.system('sudo chmod 777 /var/www/html')
+	os.system('chmod 777 /var/www/html')
 	#sk the user to name the html files to be shown in the Apache server
 	ff=raw_input('Introduce the name of the first html file: \n')
 	sf=raw_input('Introduce the name of the second html file: \n')
 	
 	#creating variables which address the html files
 	fone=('/var/www/html/'+ff+'.html')
-	os.system('sudo mkdir /var/www/html/2pages')
+	os.system('mkdir /var/www/html/2pages')
 	dir=('/var/www/html/2pages')
 	fsecond=(dir+'/'+sf+'.html')
 	#a variable which address to the setting file of apache
 	authfile=('/etc/httpd/conf/httpd.conf')
 
 	#create the first html file
-	os.system('sudo echo "new" >> '+fone)
+	os.system('echo "new" >> '+fone)
 	#open the file
 	page=open(fone, 'w')
 	#write into the file
@@ -109,10 +109,10 @@ def WebsideI():
 	</html>""")
 
 	#Authentication inside the html configuration file
-	os.system('sudo sed -i "151s/None/AuthConfig/1" '+authfile)
-	os.system('sudo sed -i \'159i <Directory "'+dir+'">\' '+authfile)
-	os.system('sudo sed -i \'160i AllowOverride AuthConfig\' '+authfile)
-	os.system('sudo sed -i \'161i </Directory>\' '+authfile)
+	os.system('sed -i "151s/None/AuthConfig/1" '+authfile)
+	os.system('sed -i \'159i <Directory "'+dir+'">\' '+authfile)
+	os.system('sed -i \'160i AllowOverride AuthConfig\' '+authfile)
+	os.system('sed -i \'161i </Directory>\' '+authfile)
 	
 	#create a file which contain the passwords and users to access the second page
 	htpasswd=(dir+'/.htpasswd')
@@ -121,11 +121,11 @@ def WebsideI():
 	UserTwo= raw_input('Introduce user2: \n')
 	Ptwo= raw_input('Introduce password: \n')
 	
-	os.system('sudo htpasswd -ci '+htpasswd+' '+UserOne+' <<< '+Pone)
-	os.system('sudo htpasswd -i '+htpasswd+' ' +UserTwo+' <<< '+Ptwo)
+	os.system('htpasswd -ci '+htpasswd+' '+UserOne+' <<< '+Pone)
+	os.system('htpasswd -i '+htpasswd+' ' +UserTwo+' <<< '+Ptwo)
 
-	os.system('sudo chmod 777 '+dir)
-	os.system('sudo echo "new" >> '+dir+'/.htaccess')
+	os.system('chmod 777 '+dir)
+	os.system('echo "new" >> '+dir+'/.htaccess')
 	htaccess=open(dir+'/.htaccess', 'w')
 	htaccess.write("""Authtype Basic
 AuthName "users: """+UserOne+', '+UserTwo+' passwords: '+Pone+', '+Ptwo+"""
@@ -133,11 +133,11 @@ AuthUserFile """+htpasswd+"""
 Require valid-user""")
 	
 	#permissions for the file htaccess and htpasswd
-	os.system('sudo chmod 644 '+dir+'/.htaccess')
-	os.system('sudo chmod 644 '+htpasswd)
+	os.system('chmod 644 '+dir+'/.htaccess')
+	os.system('chmod 644 '+htpasswd)
 
 	#create the second page of the webside
-	os.system('sudo echo "new" >> '+fsecond)
+	os.system('echo "new" >> '+fsecond)
 	page=open(fsecond, 'w')
 	page.write("""<!DOCTYPE html>
 	<html>
@@ -151,7 +151,7 @@ Require valid-user""")
 	</html>""")
 	
 	#restart the Apache server
-	os.system('sudo service httpd restart')
+	os.system('service httpd restart')
 
 #Function to add the IP into Django server
 def IpAccessI():
@@ -161,4 +161,4 @@ def IpAccessI():
 	#variable with the line that will be replaced in the file setting
 	address= ('ALLOWED_HOSTS = [\''+ip.strip('\n')+'\',]')
 
-	os.system('sudo sed -i \"28s/.*/'+address+'/\" /opt/django/project1/project1/settings.py')
+	os.system('sed -i \"28s/.*/'+address+'/\" /opt/django/project1/project1/settings.py')
