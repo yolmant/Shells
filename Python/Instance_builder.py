@@ -9,8 +9,8 @@ tk = boto3.resource('ec2')
 
 keyP= raw_input('Introduce you key_pair: \n')	#key pair that the server will use to run
 Seg= str(raw_input('Introduce the security group: \n'))	#the firewall that your server will use to allow or deny inbounds
+image = raw_input('Introduce your image: \n')  #runing with red hat server for example ami-6f68cf0f
 
-image = 'ami-6f68cf0f'  #runing with red hat server
 Type = 't2.micro'	#Type of linux using, in this case amazon linux
 firewall=[Seg]	
 Data="""#!/usr/bin/python
@@ -54,4 +54,4 @@ print('\nInstance has been created')
 print(image)
 print(Type)
 print(keyP)
-print(firewall+'\n')
+print(firewall)
