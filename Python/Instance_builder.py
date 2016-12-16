@@ -8,7 +8,7 @@ import boto3,pprint,base64
 tk = boto3.resource('ec2')
 
 keyP= raw_input('Introduce you key_pair: \n')	#key pair that the server will use to run
-Seg= str(raw_input('Introduce the security group: \n'))	#the firewall that your server will use to allow or deny inbounds
+Seg= str(raw_input('Introduce the security group: \n'))	#the firewall that your server will use to allow or deny inbounds. remember to add a security group with the port 80 and 8000 open
 
 image = 'ami-6f68cf0f'  #runing with red hat server
 Type = 't2.micro'	#Type of linux using, in this case amazon linux
